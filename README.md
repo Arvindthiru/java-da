@@ -1,4 +1,3 @@
-# java-da
-some java programs
+# Coding Problems
 
-this is my first file on github and im really happy about it !
+Programs in Java!
