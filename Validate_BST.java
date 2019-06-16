@@ -25,7 +25,6 @@ class Solution {
     }
     public boolean checkBST(TreeNode root,long max,long min)
     {
-        //System.out.println(max);
         boolean l,r,c = false;
         if(root == null)
         {
@@ -35,7 +34,6 @@ class Solution {
         r = checkBST(root.right,max,root.val);        
         if(root.val > min && root.val < max)
         {
-            //System.out.println(root.val);
             c = true;
         }
         if(l&r&c)
