@@ -49,15 +49,13 @@ class Solution {
         return sum;
     }
     public List<List<String>> groupAnagrams(String[] strs) {
-        int i;
-        int key;
+        int i,key;
         List<String> anagramList;
         List<List<String>> result = new ArrayList<>();
         Map<Integer,List<String>> map = new HashMap<Integer,List<String>>();
         for(i=0;i<strs.length;i++)
         {
             key = getKey(strs[i]);
-            //System.out.println(key);
             if(map.containsKey(key) == false)
             {
                 anagramList = new ArrayList<String>();
@@ -70,7 +68,6 @@ class Solution {
                 anagramList.add(strs[i]);
                 map.put(key,anagramList);
             }
-            //System.out.println(map);
         }
         for(Map.Entry<Integer,List<String>> entry : map.entrySet())
         {
