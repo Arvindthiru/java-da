@@ -1,76 +1,68 @@
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        Map<Integer,List<Integer>> adjList;
-        adjList = buildAdjList(prerequisites);
-        boolean[] visited = new boolean[numCourses];
-        boolean[] finished = new boolean[numCourses];
-        boolean result;
-        System.out.println(adjList);
-        for(Map.Entry<Integer,List<Integer>>entry : adjList.entrySet())
+        Map<Integer,List<Integer>> adList = buildAdjList(prerequisites);
+        System.out.println(adList);
+        int[] visited = new int[numCourses];
+        for(int i=0;i<numCourses;i++)
         {
-            if(finished[entry.getKey()] == false)
+            if(dfs(i,adList,visited)==false)
             {
-                result = dfsGraph(adjList,visited,finished,entry.getKey(),entry.getValue());
-                if(result == true)
-                {
-                    return false;
-                }
+                return false;
             }
+            
         }
         return true;
     }
-    
-    public Map<Integer,List<Integer>> buildAdjList(int[][] prerequisites)
+    public boolean dfs(int node,Map<Integer,List<Integer>> adjlist,int[] visited)
+    {
+        if(visited[node] == -1)
+        {
+            return false;
+        }
+        if(visited[node] == 1)
+        {
+            return true;
+        }
+        int i;
+        List<Integer> adjnodes;
+        if(adjlist.containsKey(node)==true)
+        {
+            adjnodes = adjlist.get(node);
+        }
+        else
+        {
+            visited[node] = 1;
+            return true;
+        }
+        visited[node] = -1;
+        for(i=0;i<adjnodes.size();i++)
+        {
+            if(dfs(adjnodes.get(i),adjlist,visited)==false)
+            {
+                return false;
+            }
+        }
+        visited[node] = 1;
+        return true;
+    }
+    public Map<Integer,List<Integer>> buildAdjList(int[][] edges)
     {
         Map<Integer,List<Integer>> map = new HashMap<>();
-        List<Integer> l;
-        for(int[] arr : prerequisites)
+        List<Integer> temp;
+        for(int i=0;i<edges.length;i++)
         {
-            if(map.containsKey(arr[1]) == true)
+            if(map.containsKey(edges[i][1]) == true)
             {
-                l = map.get(arr[1]);
-                l.add(arr[0]);
+                temp = map.get(edges[i][1]);
+                temp.add(edges[i][0]);
             }
             else
             {
-                l = new ArrayList<>();
-                l.add(arr[0]);
-                map.put(arr[1],l);
+                temp = new ArrayList<>();
+                temp.add(edges[i][0]);
+                map.put(edges[i][1],temp);
             }
         }
         return map;
-    }
-    
-    public boolean dfsGraph(Map<Integer,List<Integer>> adjList,boolean[] visited, boolean[] finished, int node, List<Integer> adjNodes )
-    {
-        int i;
-        boolean result;
-        visited[node] = true;
-        for(i=0;i<adjNodes.size();i++)
-        {
-            if(finished[adjNodes.get(i)] == false && visited[adjNodes.get(i)] == false)
-            {
-                if(adjList.containsKey(adjNodes.get(i)) == true)
-                {
-                    result = dfsGraph(adjList,visited,finished,adjNodes.get(i),adjList.get(adjNodes.get(i)));
-                    if(result == true)
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    visited[adjNodes.get(i)] = true;
-                    finished[adjNodes.get(i)] = true;
-                    continue;
-                }
-            }
-            if(visited[adjNodes.get(i)] == true && finished[adjNodes.get(i)] == false)
-            {
-                return true;
-            }
-        }
-        finished[node] = true;
-        return false;
     }
 }
